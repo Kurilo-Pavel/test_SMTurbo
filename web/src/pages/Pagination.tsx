@@ -1,5 +1,6 @@
 import {useState} from "react";
 import classNames from "classnames";
+import {CountPage, CountUsersPage} from "../../../srv/constants";
 
 type PaginationProps = {
   usersCount: number;
@@ -9,14 +10,14 @@ type PaginationProps = {
 const Pagination = ({usersCount, setNewUsers}: PaginationProps) => {
   const [page, setPage] = useState(0);
   const [currentPage,setCurrentPage] = useState(1)
-  const count = 10;
+
   let arr = []
-  for (let i = 1 + page; i <= count + page; ++i) {
+  for (let i = 1 + page; i <= CountPage + page; ++i) {
     arr = [...arr, i]
   }
 
   const handleClick = (number) => {
-    if (page + number >= 0 && page + number <= usersCount)
+    if (page + number >= 0 && (page + number) <= usersCount/CountUsersPage-CountPage)
       setPage((prev) => prev + number);
   };
 
@@ -28,7 +29,7 @@ const Pagination = ({usersCount, setNewUsers}: PaginationProps) => {
   }
 
   return <div className="block_pagination">
-    <span className="link_page" onClick={() => handleClick(-count)}>&laquo;</span>
+    <span className="link_page" onClick={() => handleClick(-CountPage)}>&laquo;</span>
     <span className="link_page" onClick={() => handleClick(-1)}>&lsaquo;</span>
     {arr.map((numberPage: number) => {
       return <span className={classNames("link_page",{"current_page": currentPage === numberPage})} key={numberPage} onClick={() => {
@@ -37,7 +38,7 @@ const Pagination = ({usersCount, setNewUsers}: PaginationProps) => {
       >{numberPage}</span>
     })}
     <span className="link_page" onClick={() => handleClick(1)}>&rsaquo;</span>
-    <span className="link_page" onClick={() => handleClick(count)}>&raquo;</span>
+    <span className="link_page" onClick={() => handleClick(CountPage)}>&raquo;</span>
 
   </div>
 };

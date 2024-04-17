@@ -1,6 +1,7 @@
 import { UserService } from './users.service';
 import { Controller, Get, Logger, Param } from '@nestjs/common';
 import { UsersResponseDto } from './users.response.dto';
+import { CountUsersPage } from '../../constants';
 
 @Controller('users')
 export class UserController {
@@ -19,9 +20,8 @@ export class UserController {
   async getPartUsers(@Param('page') page: number) {
     this.logger.log('Get only part users');
     const users = await this.userService.findAll();
-    const countUsersPage = 20;
     const partUsers = users.filter((user, index) => {
-      if (index >= countUsersPage * (page - 1) && index < countUsersPage * page) {
+      if (index >= CountUsersPage * (page - 1) && index < CountUsersPage * page) {
         return user;
       }
     });
